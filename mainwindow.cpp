@@ -5,6 +5,7 @@
 #include <QMenuBar>
 #include <QMenu>
 #include <QAction>
+#include <QSpacerItem>
 
 MainWindow::MainWindow(QWidget* parent)
     : QMainWindow(parent),
@@ -15,6 +16,7 @@ MainWindow::MainWindow(QWidget* parent)
 {
     QWidget* centralWidget = new QWidget(this);
     QVBoxLayout* mainLayout = new QVBoxLayout(centralWidget);
+    mainLayout->setContentsMargins(10, 10, 10, 10);
 
     // ВЕРХНЕЕ МЕНЮ
     QMenuBar* menuBar = new QMenuBar(this);
@@ -30,19 +32,28 @@ MainWindow::MainWindow(QWidget* parent)
     });
     connect(exitAction, &QAction::triggered, this, &MainWindow::close);
 
-    //ПАНЕЛЬ ИНФОРМАЦИИ
+    // ПАНЕЛЬ ИНФОРМАЦИИ
     QHBoxLayout* topLayout = new QHBoxLayout();
     timerLabel = new QLabel("Время: 0", this);
     flagsLabel = new QLabel("Мины: 0", this);
-    topLayout->addWidget(timerLabel);
-    topLayout->addWidget(flagsLabel);
+    topLayout->addWidget(timerLabel, 0, Qt::AlignCenter);
+    topLayout->addWidget(flagsLabel, 0, Qt::AlignCenter);
 
     gameGrid = new QGridLayout();
     gameGrid->setSpacing(1);
-    gameGrid->setSizeConstraint(QLayout::SetFixedSize);
+    gameGrid->setSizeConstraint(QLayout::SetFixedSize); // Запрещаем сетке растягиваться
 
     mainLayout->addLayout(topLayout);
-    mainLayout->addLayout(gameGrid);
+
+    QHBoxLayout* gridContainerLayout = new QHBoxLayout();
+    gridContainerLayout->addStretch(1);
+    gridContainerLayout->addLayout(gameGrid);
+    gridContainerLayout->addStretch(1);
+
+    mainLayout->addStretch(1);
+    mainLayout->addLayout(gridContainerLayout);
+    mainLayout->addStretch(1);
+
     setCentralWidget(centralWidget);
 
     resize(400, 300);
@@ -68,14 +79,19 @@ void MainWindow::initGrid(int rows, int cols) {
     buttons.clear();
     buttons.resize(rows, std::vector<CellButton*>(cols, nullptr));
 
+    gameGrid->setSizeConstraint(QLayout::SetFixedSize);
+    gameGrid->setSpacing(1); // Минимальный отступ между кнопками
+
     QWidget* container = centralWidget();
     if (!container) container = this;
 
     for (int r = 0; r < rows; ++r) {
         for (int c = 0; c < cols; ++c) {
             CellButton* button = new CellButton(r, c, container);
-            gameGrid->addWidget(button, r, c);
 
+            button->setFixedSize(30, 30);
+
+            gameGrid->addWidget(button, r, c);
             buttons[r][c] = button;
 
             connect(button, &CellButton::leftClicked, this, [this, r, c]() {
