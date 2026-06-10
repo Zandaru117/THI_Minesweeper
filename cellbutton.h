@@ -9,6 +9,7 @@ class CellButton : public QPushButton {
 
 public:
     CellButton(int r, int c, QWidget* parent = nullptr);
+    void setMinesCount(int count);
     int getRow() const { return row; }
     int getCol() const { return col; }
 

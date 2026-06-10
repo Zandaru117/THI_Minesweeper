@@ -120,27 +120,24 @@ void MainWindow::updateDisplay(const std::vector<CellInfo>& revealedCells) {
         if (!btn) continue;
 
         if (info.isRevealed) {
-            btn->setEnabled(false);
+            btn->setAttribute(Qt::WA_TransparentForMouseEvents, true);
+
             if (info.isMine) {
                 btn->setText("💣");
-                btn->setStyleSheet("background-color: red; color: black; font-weight: bold;");
+                btn->setStyleSheet("QPushButton { background-color: #EF9A9A; border: 1px solid #B0B0B0; font-size: 14px; }");
             } else {
-                if (info.neighborMinesCount > 0) {
-                    btn->setText(QString::number(info.neighborMinesCount));
-                } else {
-                    btn->setText("");
-                }
-                btn->setStyleSheet("background-color: #E0E0E0; border: 1px solid #B0B0B0;");
+                btn->setMinesCount(info.neighborMinesCount);
             }
         } else if (info.isFlagged) {
             btn->setText("🚩");
-            btn->setStyleSheet("color: red; font-weight: bold;");
+            btn->setStyleSheet("QPushButton { color: #D32F2F; font-weight: bold; font-size: 14px; }");
         } else {
-            btn->setText("");
+            btn->setAttribute(Qt::WA_TransparentForMouseEvents, false);
             btn->setStyleSheet("");
         }
     }
 }
+
 
 void MainWindow::updateLabels(int time, int flags) {
     if (timerLabel) timerLabel->setText(QString("Время: %1").arg(time));
