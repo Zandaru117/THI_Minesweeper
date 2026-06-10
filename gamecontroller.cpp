@@ -65,13 +65,20 @@ void GameController::startNewGame(int rows, int cols, int mines) {
 void GameController::handleCellClick(int row, int col) {
     if (!isGameActive || !gameEngine) return;
 
-    if (isFirstMove) {
-        gameEngine->generateBoard(row, col);
-        isFirstMove = false;
-        gameTimer->start(1000);
+    std::vector<CellInfo> changes;
+
+    if (gameEngine->isCellRevealed(row, col)) {
+        changes = gameEngine->chordCell(row, col);
+    } else {
+        if (isFirstMove) {
+            isFirstMove = false;
+            gameTimer->start(1000);
+        }
+        changes = gameEngine->revealCell(row, col);
     }
 
-    std::vector<CellInfo> changes = gameEngine->revealCell(row, col);
+    if (changes.empty()) return;
+
     if (view) view->updateDisplay(changes);
 
     for (const auto& cell : changes) {
@@ -99,7 +106,7 @@ void GameController::handleCellClick(int row, int col) {
 }
 
 void GameController::handleCellRightClick(int row, int col) {
-    if (!isGameActive || isFirstMove || !gameEngine) return;
+    if (!isGameActive || !gameEngine) return;
 
     CellInfo updatedCell = gameEngine->toggleFlag(row, col);
 

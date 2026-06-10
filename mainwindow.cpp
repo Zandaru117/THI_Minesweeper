@@ -120,12 +120,12 @@ void MainWindow::updateDisplay(const std::vector<CellInfo>& revealedCells) {
         if (!btn) continue;
 
         if (info.isRevealed) {
-            btn->setAttribute(Qt::WA_TransparentForMouseEvents, true);
-
             if (info.isMine) {
+                btn->setAttribute(Qt::WA_TransparentForMouseEvents, true);
                 btn->setText("💣");
                 btn->setStyleSheet("QPushButton { background-color: #EF9A9A; border: 1px solid #B0B0B0; font-size: 14px; }");
             } else {
+                btn->setAttribute(Qt::WA_TransparentForMouseEvents, false);
                 btn->setMinesCount(info.neighborMinesCount);
             }
         } else if (info.isFlagged) {
@@ -133,6 +133,7 @@ void MainWindow::updateDisplay(const std::vector<CellInfo>& revealedCells) {
             btn->setStyleSheet("QPushButton { color: #D32F2F; font-weight: bold; font-size: 14px; }");
         } else {
             btn->setAttribute(Qt::WA_TransparentForMouseEvents, false);
+            btn->setText("");
             btn->setStyleSheet("");
         }
     }
