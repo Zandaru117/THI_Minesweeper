@@ -39,8 +39,8 @@ void GameSetupDialog::updateMaxMines() {
         int c = ui->spinCols->value();
         int totalCells = r * c;
 
-        // Плотность не более 40%
-        int maxMines = static_cast<int>(totalCells * 0.40);
+        // Плотность не более 30%
+        int maxMines = static_cast<int>(totalCells * 0.30);
         if (maxMines < 1) maxMines = 1;
 
         ui->spinMines->setRange(1, maxMines);
