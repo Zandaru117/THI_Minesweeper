@@ -15,6 +15,9 @@ EndGameDialog::EndGameDialog(bool isWin, int elapsedTime, QWidget* parent)
     }
 
     ui->statsLabel->setText(QString("Время прохождения: %1 сек.").arg(elapsedTime));
+
+    this->adjustSize();
+    this->setFixedSize(this->size());
 }
 
 EndGameDialog::~EndGameDialog() {
