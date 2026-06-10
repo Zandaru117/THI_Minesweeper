@@ -43,6 +43,18 @@ void GameController::startNewGame(int rows, int cols, int mines) {
         }
     }
 
+    if (rows < 8) rows = 8;
+    if (cols < 8) cols = 8;
+
+    // Проверяем лимит плотности мин (макс 40%)
+    int maxAllowedMines = static_cast<int>((rows * cols) * 0.40);
+    if (mines > maxAllowedMines) {
+        mines = maxAllowedMines;
+    }
+    if (mines < 1) {
+        mines = 1;
+    }
+
     if (gameEngine) {
         gameEngine->destroy();
         gameEngine = nullptr;

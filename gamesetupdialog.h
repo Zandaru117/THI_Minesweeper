@@ -21,6 +21,7 @@ public:
 private slots:
     void on_startButton_clicked();
     void on_cancelButton_clicked();
+    void updateMaxMines();
     void updateSpinBoxes(int rows, int cols, int mines, bool enableCustom);
 
 private:
