@@ -2,9 +2,10 @@ QT       += core gui widgets
 
 CONFIG += c++17
 
-INCLUDEPATH += "C:/TPU/sem4/programming_technologies/DLL"
-
-LIBS += -L"C:/TPU/sem4/programming_technologies/DLL/build" -lMinesweeperLogic
+#INCLUDEPATH += "C:/TPU/sem4/programming_technologies/DLL"
+INCLUDEPATH += "$$PWD/../DLL"
+#LIBS += -L"C:/TPU/sem4/programming_technologies/DLL/build" -lMinesweeperLogic
+LIBS += -L"$$PWD/../DLL/build" -lMinesweeperLogic
 
 SOURCES += \
     cellbutton.cpp \
